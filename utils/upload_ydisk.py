@@ -2,7 +2,11 @@ import os
 import requests
 
 
-def check_folder_exists(disk_token, path, disk_base_url):
+def check_folder_exists(
+        disk_token,
+        path,
+        disk_base_url
+):
     headers = {"Authorization": f"OAuth {disk_token}"}
     params = {"path": path}
 
@@ -23,7 +27,13 @@ def check_folder_exists(disk_token, path, disk_base_url):
         return False
 
 
-def upload_to_ydisk(local_file_path, disk_base_folder, current_date_folder, disk_token, disk_base_url):
+def upload_to_ydisk(
+        local_file_path,
+        disk_base_folder,
+        current_date_folder,
+        disk_token,
+        disk_base_url
+):
     file_name = os.path.basename(local_file_path)
     disk_path = f"{disk_base_folder}/{current_date_folder}/{file_name}"
 
@@ -58,11 +68,24 @@ def upload_to_ydisk(local_file_path, disk_base_folder, current_date_folder, disk
         return False
 
 
-def check_and_create_root_folder(disk_base_folder, disk_token, disk_base_url):
-    return check_folder_exists(disk_token, disk_base_folder, disk_base_url)
+def check_and_create_root_folder(
+        disk_base_folder,
+        disk_token,
+        disk_base_url
+):
+    return check_folder_exists(
+        disk_token,
+        disk_base_folder,
+        disk_base_url
+    )
 
 
-def check_or_create_data_folder(disk_base_folder, current_date_folder, disk_token, disk_base_url):
+def check_or_create_data_folder(
+        disk_base_folder,
+        current_date_folder,
+        disk_token,
+        disk_base_url
+):
     full_path = f"{disk_base_folder}/{current_date_folder}"
     print(full_path)
     return check_folder_exists(disk_token, full_path, disk_base_url)
