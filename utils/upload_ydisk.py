@@ -30,12 +30,12 @@ def check_folder_exists(
 def upload_to_ydisk(
         NMAP_DATA,
         NMAP_APP_PATH,
-        current_date_folder,
+        NMAP_DATA_FOLDER,
         YDEX_API_KEY,
         YDEX_API_PATH
 ):
     file_name = os.path.basename(NMAP_DATA)
-    disk_path = f"{NMAP_APP_PATH}/{current_date_folder}/{file_name}"
+    disk_path = f"{NMAP_APP_PATH}/{NMAP_DATA_FOLDER}/{file_name}"
 
     print(disk_path)
     print(NMAP_DATA)
@@ -83,10 +83,10 @@ def check_and_create_root_folder(
 
 def check_or_create_data_folder(
         NMAP_APP_PATH,
-        current_date_folder,
+        NMAP_DATA_FOLDER,
         YDEX_API_KEY,
         YDEX_API_PATH
 ):
-    full_path = f"{NMAP_APP_PATH}/{current_date_folder}"
+    full_path = f"{NMAP_APP_PATH}/{NMAP_DATA_FOLDER}"
     print(full_path)
     return check_folder_exists(YDEX_API_KEY, full_path, YDEX_API_PATH)
