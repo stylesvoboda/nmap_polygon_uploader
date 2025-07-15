@@ -3,19 +3,19 @@ import requests
 
 
 def check_folder_exists(
-        disk_token,
+        YDEX_API_KEY,
         path,
-        disk_base_url
+        YDEX_API_PATH
 ):
-    headers = {"Authorization": f"OAuth {disk_token}"}
+    headers = {"Authorization": f"OAuth {YDEX_API_KEY}"}
     params = {"path": path}
 
-    response = requests.get(f"{disk_base_url}", headers=headers, params=params)
+    response = requests.get(f"{YDEX_API_PATH}", headers=headers, params=params)
 
     if response.status_code == 200:
         return True
     elif response.status_code == 404:
-        response = requests.put(f"{disk_base_url}", headers=headers, params=params)
+        response = requests.put(f"{YDEX_API_PATH}", headers=headers, params=params)
         if response.status_code == 201:
             print(f"Папка '{path}' успешно создана.")
             return True
@@ -28,21 +28,22 @@ def check_folder_exists(
 
 
 def upload_to_ydisk(
-        local_file_path,
-        disk_base_folder,
+        NMAP_DATA,
+        NMAP_APP_PATH,
         current_date_folder,
-        disk_token,
-        disk_base_url
+        YDEX_API_KEY,
+        YDEX_API_PATH
 ):
-    file_name = os.path.basename(local_file_path)
-    disk_path = f"{disk_base_folder}/{current_date_folder}/{file_name}"
+    file_name = os.path.basename(NMAP_DATA)
+    disk_path = f"{NMAP_APP_PATH}/{current_date_folder}/{file_name}"
 
     print(disk_path)
+    print(NMAP_DATA)
 
-    headers = {"Authorization": f"OAuth {disk_token}"}
+    headers = {"Authorization": f"OAuth {YDEX_API_KEY}"}
     params = {"path": disk_path, "overwrite": "true"}
 
-    response = requests.get(f"{disk_base_url}/upload", headers=headers, params=params)
+    response = requests.get(f"{YDEX_API_PATH}/upload", headers=headers, params=params)
 
     if response.status_code != 200:
         print("Ошибка получения ссылки для загрузки:", response.json())
@@ -50,17 +51,17 @@ def upload_to_ydisk(
 
     upload_href = response.json()["href"]
 
-    with open(local_file_path, "rb") as file_data:
+    with open(NMAP_DATA, "rb") as file_data:
         upload_response = requests.put(upload_href, data=file_data)
 
     if upload_response.status_code == 201:
         print(f"Файл '{file_name}' успешно загружен на Яндекс.Диск.")
 
         try:
-            os.remove(local_file_path)
-            print(f"Локальный файл '{local_file_path}' удален.")
+            os.remove(NMAP_DATA)
+            print(f"Локальный файл '{NMAP_DATA}' удален.")
         except OSError as e:
-            print(f"Ошибка при удалении файла '{local_file_path}': {e}")
+            print(f"Ошибка при удалении файла '{NMAP_DATA}': {e}")
 
         return True
     else:
@@ -69,23 +70,23 @@ def upload_to_ydisk(
 
 
 def check_and_create_root_folder(
-        disk_base_folder,
-        disk_token,
-        disk_base_url
+        NMAP_APP_PATH,
+        YDEX_API_KEY,
+        YDEX_API_PATH
 ):
     return check_folder_exists(
-        disk_token,
-        disk_base_folder,
-        disk_base_url
+        YDEX_API_KEY,
+        NMAP_APP_PATH,
+        YDEX_API_PATH
     )
 
 
 def check_or_create_data_folder(
-        disk_base_folder,
+        NMAP_APP_PATH,
         current_date_folder,
-        disk_token,
-        disk_base_url
+        YDEX_API_KEY,
+        YDEX_API_PATH
 ):
-    full_path = f"{disk_base_folder}/{current_date_folder}"
+    full_path = f"{NMAP_APP_PATH}/{current_date_folder}"
     print(full_path)
-    return check_folder_exists(disk_token, full_path, disk_base_url)
+    return check_folder_exists(YDEX_API_KEY, full_path, YDEX_API_PATH)
