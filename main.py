@@ -9,7 +9,6 @@ from utils.upload_ydisk import check_folder_exists, upload_to_ydisk, check_and_c
     check_or_create_data_folder
 from utils.download_ydisk import download_index_json_if_exists
 
-# from utils.download_ydisk import download_index_json_if_exists
 
 
 nmap_data_folder = datetime.now().strftime("%Y-%m-%d")
@@ -84,7 +83,7 @@ remote_folder = os.path.join(nmap_app_path, nmap_data_folder)
 index_exists = download_index_json_if_exists(
     ydex_api_key,
     remote_folder,
-    "index.json",
+    nmap_data,
     local_index_path,
     ydex_api_path
 )
@@ -179,7 +178,7 @@ check_or_create_data_folder(
 )
 
 upload_to_ydisk(
-    "index.json",
+    nmap_data,
     nmap_app_path,
     nmap_data_folder,
     ydex_api_key,
