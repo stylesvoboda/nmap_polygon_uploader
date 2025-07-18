@@ -10,9 +10,9 @@
 
 ## Настройте параметры
 
-1. [Получить](https://yandex.ru/dev/disk/poligon/) OAuth-токен Яндекс
+1. [Получите](https://yandex.ru/dev/disk/poligon/) OAuth-токен Яндекс
 
-2. Переименовать файл `utils/example.settings.py` --> `settings.py` и указать для следующих переменных ваши данные:
+2. Переименуйте файл `utils/example.settings.py` --> `settings.py` и указать для следующих переменных ваши данные:
 
 ```python
 ydex_api_key = "<ВАШ_OAUTH_ТОКЕН>"  # указать ваш OAuth-токен Яндекс
