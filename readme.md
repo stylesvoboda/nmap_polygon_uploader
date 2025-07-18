@@ -52,9 +52,7 @@ def_shp_data = "/../../geoserver_data.zip"  # Название архива
 def_shp_name = "oopt_wth_detailsPolygon.shp"  # Название файла *shp
 ```
 
-<br>
-<img src="https://img.youtube.com/vi/2dHEWfSLstw/maxresdefault.jpg" width="100%">(https://youtu.be/2dHEWfSLstw)]
-<br>
+[![Демо](https://img.youtube.com/vi/kevuY9CZ3Is/sddefault.jpg)](https://www.youtube.com/watch?v=kevuY9CZ3Is)
 
 ## Данные
 
