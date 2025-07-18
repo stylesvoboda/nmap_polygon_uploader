@@ -7,6 +7,7 @@ from utils.settings import *
 from datetime import datetime
 from utils.upload_ydisk import check_folder_exists, upload_to_ydisk, check_and_create_root_folder, \
     check_or_create_data_folder
+from utils.download_ydisk import download_index_json_if_exists
 
 # from utils.download_ydisk import download_index_json_if_exists
 
@@ -77,10 +78,31 @@ def extract_geometry(geometry):
         raise ValueError(f"Неподдерживаемый тип геометрии: {geom_type}")
 
 
+remote_folder = os.path.join(nmap_app_path, nmap_data_folder)
+
+# 1. Проверяем наличие index.json на Яндекс.Диске
+index_exists = download_index_json_if_exists(
+    ydex_api_key,
+    remote_folder,
+    "index.json",
+    local_index_path,
+    ydex_api_path
+)
+
 output = {
     "paths": {},
     "points": {}
 }
+
+# 2. Если index.json найден, загружаем его и объединяем с новым output после извлечения геометрии
+if index_exists:
+    with open(local_index_path, "r", encoding="utf-8") as f:
+        old_data = json.load(f)
+    # После извлечения геометрии (после цикла по gdf) объединяем output
+    merge_old_index = True
+    os.remove(local_index_path)
+else:
+    merge_old_index = False
 
 for _, row in gdf.iterrows():
     try:
@@ -134,6 +156,11 @@ for _, row in gdf.iterrows():
         print(f"Пропущена геометрия: {e}")
     except Exception as e:
         print(f"Ошибка при обработке строки: {e}")
+
+# После цикла объединяем, если был старый index.json
+if merge_old_index:
+    output["paths"].update(old_data.get("paths", {}))
+    output["points"].update(old_data.get("points", {}))
 
 with open("index.json", "w", encoding="utf-8") as f:
     json.dump(output, f, ensure_ascii=False, indent=4)
