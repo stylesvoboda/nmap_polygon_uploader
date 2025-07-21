@@ -1,15 +1,14 @@
-import geopandas as gpd
 import json
-import uuid
 import os
-
-from utils.settings import *
+import uuid
 from datetime import datetime
-from utils.upload_ydisk import check_folder_exists, upload_to_ydisk, check_and_create_root_folder, \
-    check_or_create_data_folder
+
+import geopandas as gpd
+
 from utils.download_ydisk import download_index_json_if_exists
-
-
+from utils.settings import *
+from utils.upload_ydisk import upload_to_ydisk, check_and_create_root_folder, \
+    check_or_create_data_folder
 
 nmap_data_folder = datetime.now().strftime("%Y-%m-%d")
 print(f"Папка для текущей даты: {nmap_data_folder}")
@@ -79,7 +78,7 @@ def extract_geometry(geometry):
 
 remote_folder = os.path.join(nmap_app_path, nmap_data_folder)
 
-# 1. Проверяем наличие index.json на Яндекс.Диске
+# 1. Проверяем наличие index.json на Яндекс Диске
 index_exists = download_index_json_if_exists(
     ydex_api_key,
     remote_folder,
